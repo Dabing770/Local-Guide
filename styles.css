@@ -42,6 +42,7 @@
 html {
   min-height: 100%;
   background: var(--bg);
+  overflow-x: hidden;
 }
 
 body {
@@ -55,6 +56,7 @@ body {
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 body.modal-open {
@@ -767,24 +769,59 @@ button {
   }
 
   .nav-actions {
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 42px;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .theme-toggle {
+    flex: 0 0 42px;
   }
 
   .section {
     width: min(100% - 24px, var(--max-width));
+    max-width: calc(100vw - 24px);
   }
 
   .hero {
-    padding: 38px 0 24px;
+    gap: 28px;
+    padding: 34px 0 22px;
+  }
+
+  .hero-content,
+  .page-title,
+  .section-heading,
+  .company-card,
+  .empty-state {
+    max-width: calc(100vw - 24px);
+    min-width: 0;
   }
 
   .hero h1 {
-    font-size: clamp(2.2rem, 15vw, 3.4rem);
+    font-size: clamp(2.15rem, 13vw, 3.25rem);
+    line-height: 1.02;
+  }
+
+  .hero-copy {
+    max-width: calc(100vw - 24px);
+    margin-top: 18px;
+    font-size: 1rem;
+    overflow-wrap: break-word;
+  }
+
+  .page-title p,
+  .section-heading p {
+    max-width: calc(100vw - 24px);
+    overflow-wrap: break-word;
   }
 
   .search-panel {
+    max-width: calc(100vw - 24px);
     align-items: stretch;
     flex-direction: column;
+    margin-top: 26px;
+    padding: 8px;
   }
 
   .search-button {
@@ -792,24 +829,60 @@ button {
   }
 
   .hero-visual {
-    min-height: 330px;
+    width: 100%;
+    max-width: calc(100vw - 24px);
+    min-height: 340px;
+  }
+
+  .hero-map {
+    background-size: 36px 36px;
+  }
+
+  .route-line {
+    inset: 34px 20px 50px;
   }
 
   .floating-city {
-    min-width: 118px;
+    width: clamp(116px, 35vw, 144px);
+    min-width: 0;
+    max-width: none;
     padding: 10px;
   }
 
+  .floating-city strong {
+    font-size: 0.94rem;
+  }
+
+  .floating-city span {
+    font-size: 0.78rem;
+  }
+
+  .city-marker-loimaa {
+    top: 26px;
+    left: 16px;
+  }
+
   .city-marker-turku {
-    right: 18px;
+    top: 88px;
+    right: 16px;
   }
 
   .city-marker-helsinki {
-    right: 26px;
+    top: 218px;
+    right: 16px;
+  }
+
+  .city-marker-tampere {
+    top: 180px;
+    left: 16px;
   }
 
   .metric-strip {
     display: none;
+  }
+
+  .content-band {
+    padding: 34px 0 52px;
   }
 
   .section-heading {
@@ -822,9 +895,78 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .card-button {
+    min-height: 138px;
+    padding: 18px;
+  }
+
+  .card-button strong {
+    font-size: 1.32rem;
+  }
+
+  .page-header {
+    padding: 32px 0 10px;
+  }
+
+  .company-card {
+    padding: 18px;
+  }
+
   .company-top,
   .footer-inner {
     align-items: stretch;
     flex-direction: column;
   }
+
+  .language-switcher {
+    flex: 1;
+    min-width: 0;
+    justify-content: space-between;
+  }
+
+  .language-button {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .company-actions {
+    display: grid;
+  }
+
+  .company-actions > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+
+  .hero-visual {
+    min-height: 320px;
+  }
+
+  .floating-city {
+    width: clamp(108px, 39vw, 132px);
+    padding: 9px;
+  }
+
+  .city-marker-loimaa {
+    top: 22px;
+    left: 12px;
+  }
+
+  .city-marker-turku {
+    top: 82px;
+    right: 12px;
+  }
+
+  .city-marker-tampere {
+    top: 168px;
+    left: 12px;
+  }
+
+  .city-marker-helsinki {
+    top: 204px;
+    right: 12px;
+  }
+
 }
