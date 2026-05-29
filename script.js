@@ -102,6 +102,13 @@
           details:
             "Paikallinen kahvila, jonka tiedot ovat esimerkkisisältöä hakemiston tulevaa rakennetta varten.",
         },
+        yiSushi: {
+          name: "Yi Sushi",
+          category: "Ruokailu",
+          address: "Vesikoskenkatu 11, 32200 Loimaa",
+          website: "https://yisushi.fi",
+          details: "Sushiravintola Loimaalla osoitteessa Vesikoskenkatu 11.",
+        },
       },
       comingSoon: {
         title: "Tulossa pian",
@@ -206,6 +213,13 @@
           address: "Torikatu 3, 32200 Loimaa",
           details:
             "Ett lokalt café med exempeluppgifter för katalogens framtida struktur.",
+        },
+        yiSushi: {
+          name: "Yi Sushi",
+          category: "Mat",
+          address: "Vesikoskenkatu 11, 32200 Loimaa",
+          website: "https://yisushi.fi",
+          details: "En sushirestaurang i Loimaa på Vesikoskenkatu 11.",
         },
       },
       comingSoon: {
@@ -312,6 +326,13 @@
           details:
             "A local café with sample information for the future directory structure.",
         },
+        yiSushi: {
+          name: "Yi Sushi",
+          category: "Dining",
+          address: "Vesikoskenkatu 11, 32200 Loimaa",
+          website: "https://yisushi.fi",
+          details: "A sushi restaurant in Loimaa at Vesikoskenkatu 11.",
+        },
       },
       comingSoon: {
         title: "Coming soon",
@@ -325,7 +346,7 @@
     },
   };
 
-  const companyIds = ["exampleRestaurant", "localCafe"];
+  const companyIds = ["exampleRestaurant", "localCafe", "yiSushi"];
 
   let state = {
     language: getStoredLanguage(),
@@ -681,7 +702,7 @@
 
     const actions = createElement("div", "company-actions");
     const website = createElement("a", "primary-button", copy.labels.website);
-    website.href = "https://example.com";
+    website.href = company.website || "https://example.com";
     website.target = "_blank";
     website.rel = "noopener noreferrer";
 
