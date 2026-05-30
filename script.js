@@ -22,7 +22,7 @@
         title: "Löydä paikalliset yritykset alueittain",
         intro:
           "JDT Local Guide auttaa löytämään ravintolat, viihteen ja palvelut suomalaisista kaupungeista nopeasti ja selkeästi.",
-        searchPlaceholder: "Hae yrityksiä...",
+        searchPlaceholder: "Hae kaupunkia...",
         searchButton: "Hae",
       },
       stats: {
@@ -134,7 +134,7 @@
         title: "Hitta lokala företag efter område",
         intro:
           "JDT Local Guide hjälper dig att snabbt hitta restauranger, nöjen och tjänster i finländska städer.",
-        searchPlaceholder: "Sök företag...",
+        searchPlaceholder: "Sök stad...",
         searchButton: "Sök",
       },
       stats: {
@@ -246,7 +246,7 @@
         title: "Find local businesses by region",
         intro:
           "JDT Local Guide helps people discover restaurants, entertainment and services across Finnish cities with a clear directory experience.",
-        searchPlaceholder: "Search businesses...",
+        searchPlaceholder: "Search city...",
         searchButton: "Search",
       },
       stats: {
@@ -526,25 +526,59 @@
 
   function createSearch(copy) {
     const form = createElement("form", "search-panel");
+    form.setAttribute("role", "search");
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const query = form.querySelector("input").value.trim().toLowerCase();
-      if (query.includes("loimaa")) {
-        navigate("/city/loimaa");
+      const cityId = cities.find((id) => {
+        const cityName = copy.cities[id].name.toLowerCase();
+        return query && (query.includes(id) || query.includes(cityName) || cityName.includes(query));
+      });
+
+      if (cityId) {
+        navigate(`/city/${cityId}`);
       }
     });
 
-    const inputRow = createElement("div", "search-input-row");
+    const poda = createElement("div", "uiverse-poda");
+    poda.append(
+      createElement("div", "uiverse-glow"),
+      createElement("div", "uiverse-dark-border-bg"),
+      createElement("div", "uiverse-dark-border-bg"),
+      createElement("div", "uiverse-dark-border-bg"),
+      createElement("div", "uiverse-white"),
+      createElement("div", "uiverse-border"),
+    );
+
+    const main = createElement("div", "uiverse-main");
     const input = document.createElement("input");
     input.type = "search";
+    input.name = "text";
+    input.className = "uiverse-input";
     input.placeholder = copy.hero.searchPlaceholder;
     input.setAttribute("aria-label", copy.hero.searchPlaceholder);
-    inputRow.append(createElement("span", "search-icon", searchIcon()), input);
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        form.requestSubmit();
+      }
+    });
 
-    const button = createElement("button", "search-button", copy.hero.searchButton);
+    const button = createElement("button", "uiverse-filter-button", filterIcon());
     button.type = "submit";
+    button.setAttribute("aria-label", copy.hero.searchButton);
 
-    form.append(inputRow, button);
+    main.append(
+      input,
+      createElement("div", "uiverse-input-mask"),
+      createElement("div", "uiverse-pink-mask"),
+      createElement("div", "uiverse-filter-border"),
+      button,
+      createElement("div", "uiverse-search-icon", uiverseSearchIcon()),
+    );
+
+    poda.append(main);
+    form.append(poda);
     return form;
   }
 
@@ -839,6 +873,39 @@
 
   function searchIcon() {
     return iconSvg('<circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>');
+  }
+
+  function customSvg(markup) {
+    const template = document.createElement("template");
+    template.innerHTML = markup.trim();
+    return template.content.firstElementChild;
+  }
+
+  function uiverseSearchIcon() {
+    return customSvg(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" fill="none" aria-hidden="true" focusable="false">
+        <circle stroke="url(#uiverse-search)" r="8" cy="11" cx="11"></circle>
+        <line stroke="url(#uiverse-search-line)" y2="16.65" y1="22" x2="16.65" x1="22"></line>
+        <defs>
+          <linearGradient gradientTransform="rotate(50)" id="uiverse-search">
+            <stop stop-color="var(--search-icon-start)" offset="0%"></stop>
+            <stop stop-color="var(--search-icon-mid)" offset="50%"></stop>
+          </linearGradient>
+          <linearGradient id="uiverse-search-line">
+            <stop stop-color="var(--search-icon-mid)" offset="0%"></stop>
+            <stop stop-color="var(--search-icon-end)" offset="50%"></stop>
+          </linearGradient>
+        </defs>
+      </svg>
+    `);
+  }
+
+  function filterIcon() {
+    return customSvg(`
+      <svg preserveAspectRatio="none" height="27" width="27" viewBox="4.8 4.56 14.832 15.408" fill="none" aria-hidden="true" focusable="false">
+        <path d="M8.16 6.65002H15.83C16.47 6.65002 16.99 7.17002 16.99 7.81002V9.09002C16.99 9.56002 16.7 10.14 16.41 10.43L13.91 12.64C13.56 12.93 13.33 13.51 13.33 13.98V16.48C13.33 16.83 13.1 17.29 12.81 17.47L12 17.98C11.24 18.45 10.2 17.92 10.2 16.99V13.91C10.2 13.5 9.97 12.98 9.73 12.69L7.52 10.36C7.23 10.08 7 9.55002 7 9.20002V7.87002C7 7.17002 7.52 6.65002 8.16 6.65002Z" stroke="currentColor" stroke-width="1" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    `);
   }
 
   function arrowIcon() {
